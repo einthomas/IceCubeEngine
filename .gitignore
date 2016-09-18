@@ -48,3 +48,4 @@ Temporary Items
 Debug
 *.vcxproj
 IceCubeEngine.vcxproj.filters
+*.ttf

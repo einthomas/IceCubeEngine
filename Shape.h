@@ -6,17 +6,20 @@
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
+#include <vector>
 
 #include "Shader.h"
 #include "ResourceManager.h"
 #include "Camera.h"
+#include "Light.h"
+#include "Material.h"
 
 namespace ICE {
 	class Shape {
 	public:
-		Shape(Shader shader, Camera *camera, glm::vec3 color, glm::vec3 position, glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotationAxis = glm::vec3(0.0f, 0.0f, 1.0f), GLfloat angle = 0.0f);
+		Shape(Shader shader, Camera *camera, Material material, glm::vec3 position, glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotationAxis = glm::vec3(0.0f, 0.0f, 1.0f), GLfloat angle = 0.0f);
 		Shape(Shader shader, Camera *camera, Texture texture, glm::vec3 position, glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotationAxis = glm::vec3(0.0f), GLfloat angle = 0.0f);
-		virtual void draw();
+		virtual void draw(std::vector<Light> lights);
 
 		void setPosition(glm::vec3 position);
 		void setScale(glm::vec3 scale);
@@ -30,7 +33,7 @@ namespace ICE {
 		Camera *camera;
 
 		Shader shader;
-		glm::vec3 color;
+		Material material;
 
 		glm::mat4 model;
 		glm::vec3 position;

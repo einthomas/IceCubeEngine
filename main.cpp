@@ -9,6 +9,9 @@
 #include "Cube.h"
 #include "Camera.h"
 #include "TextRenderer.h"
+#include "Light.h"
+#include "LightType.h"
+#include "DirectionalLight.h"
 
 GLboolean firstMouse = true;
 GLdouble lastX, lastY;
@@ -31,11 +34,20 @@ int main() {
 	ICE::Quad::init();
 	ICE::Cube::init();
 
+	//ICE::Light light(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), ICE::LightType::DIRECTIONAL);
+	ICE::DirectionalLight light(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+	std::vector<ICE::Light> lights;
+	lights.push_back(light);
+
+	glm::vec3 a = glm::vec3(1.0f, 0.0f, 0.0f) * ICE::ResourceManager::materials["emerald"].ambient;
+
 	ICE::Shader shader(ICE::Util::readFileToString("shaders/vert.glsl"), ICE::Util::readFileToString("shaders/frag.glsl"));
-	ICE::Triangle t(shader, &camera, glm::vec3(1.0f, 0.2f, 0.4f), glm::vec3(0.0f));
-	ICE::Quad q(shader, &camera, glm::vec3(1.0f, 0.2f, 0.4f), glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(1.0f, 0.0f, 0.0f), -55.0f);
+	ICE::Triangle t(shader, &camera, ICE::ResourceManager::materials["emerald"], glm::vec3(0.0f));
+	ICE::Quad q(shader, &camera, ICE::ResourceManager::materials["emerald"], glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(1.0f, 0.0f, 0.0f), -55.0f);
 	ICE::Quad q2(shader, &camera, ICE::ResourceManager::textures["container"], glm::vec3(0.0f, 0.0f, 0.0f));
-	ICE::Cube c(shader, &camera, ICE::ResourceManager::textures["container"], glm::vec3(0.0f));
+	//ICE::Cube c(shader, &camera, ICE::ResourceManager::textures["container"], glm::vec3(0.0f));
+	ICE::Cube c(shader, &camera, ICE::ResourceManager::materials["emerald"], glm::vec3(0.0f));
+	ICE::Cube lightCube(shader, &camera, ICE::ResourceManager::textures["cube"], glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(0.5f));
 
 	while (!window.shouldClose()) {
 		GLfloat deltaTime = window.getDeltaTime();
@@ -73,7 +85,8 @@ int main() {
 		//q2.draw();
 
 		//c.rotateBy(glm::vec3(0.0f, 1.0f, 1.0f), 1.0f);
-		c.draw();
+		c.draw(lights);
+		lightCube.draw(lights);
 
 		window.update();
 		window.swapBuffers();

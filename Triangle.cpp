@@ -3,19 +3,19 @@
 GLuint ICE::Triangle::VAO;
 GLuint ICE::Triangle::VBO;
 
-ICE::Triangle::Triangle(Shader shader, Camera *camera, glm::vec3 color, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
-	: Shape(shader, camera, color, position, scale, rotationAxis, angle) {
+ICE::Triangle::Triangle(Shader shader, Camera *camera, Material material, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
+	: Shape(shader, camera, material, position, scale, rotationAxis, angle) {
 }
 
 ICE::Triangle::Triangle(Shader shader, Camera *camera, Texture texture, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
 	: Shape(shader, camera, texture, position, scale, rotationAxis, angle) {
 }
 
-void ICE::Triangle::draw() {
+void ICE::Triangle::draw(std::vector<Light> lights) {
 	shader.use();
 	glBindVertexArray(VAO);
 
-	Shape::draw();
+	Shape::draw(lights);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glBindVertexArray(0);

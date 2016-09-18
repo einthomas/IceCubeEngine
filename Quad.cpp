@@ -4,19 +4,19 @@ GLuint ICE::Quad::VAO;
 GLuint ICE::Quad::VBO;
 GLuint ICE::Quad::EBO;
 
-ICE::Quad::Quad(Shader shader, Camera *camera, glm::vec3 color, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
-	: Shape(shader, camera, color, position, scale, rotationAxis, angle) {
+ICE::Quad::Quad(Shader shader, Camera *camera, Material material, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
+	: Shape(shader, camera, material, position, scale, rotationAxis, angle) {
 }
 
 ICE::Quad::Quad(Shader shader, Camera *camera, Texture texture, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
 	: Shape(shader, camera, texture, position, scale, rotationAxis, angle) {
 }
 
-void ICE::Quad::draw() {
+void ICE::Quad::draw(std::vector<Light> lights) {
 	shader.use();
 	glBindVertexArray(VAO);
 
-	Shape::draw();
+	Shape::draw(lights);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);

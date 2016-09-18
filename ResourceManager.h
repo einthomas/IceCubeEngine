@@ -8,6 +8,7 @@
 #include <fstream>
 
 #include "Util.h"
+#include "Material.h"
 
 namespace ICE {
 	struct Texture {
@@ -18,11 +19,16 @@ namespace ICE {
 	class ResourceManager {
 	public:
 		static std::map<std::string, Texture> textures;
+		//static std::map<std::string, Model> models;
+		static std::map<std::string, Material> materials;
 
 		static void loadResources(std::string resourceFilePath);
 
 	private:
 		static std::string TEXTURE_REGION_SEPARATOR;
+		static std::string MODEL_REGION_SEPARATOR;
+		static std::string MATERIAL_REGION_SEPARATOR;
 		static Texture loadTexture(std::string texturePath);
+		//static Model loadModel(std::string modelPath);
 	};
 }

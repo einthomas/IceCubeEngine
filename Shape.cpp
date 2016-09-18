@@ -1,9 +1,9 @@
 #include "Shape.h"
 
-ICE::Shape::Shape(Shader shader, Camera *camera, glm::vec3 color, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle) {
+ICE::Shape::Shape(Shader shader, Camera *camera, Material material, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle) {
 	this->shader = shader;
 	this->camera = camera;
-	this->color = color;
+	this->material = material;
 	this->position = position;
 	this->scale = scale;
 	this->rotationAxis = rotationAxis;
@@ -26,16 +26,31 @@ ICE::Shape::Shape(Shader shader, Camera *camera, Texture texture, glm::vec3 posi
 	updateTransformMatrix();
 }
 
-void ICE::Shape::draw() {
+void ICE::Shape::draw(std::vector<Light> lights) {
 	shader.setMatrix4("model", model);
 	shader.setMatrix4("view", camera->getViewMatrix());
 	shader.setMatrix4("projection", camera->projection);
+	
+	shader.setVector3f("eyePos", camera->position);
+
+	std::string varName;
+	for (int i = 0; i < lights.size(); i++) {
+		if (lights[i].lightType == LightType::DIRECTIONAL) {
+			varName = "dirLight";
+			shader.setVector3f(varName + ".dir", lights[i].direction);
+		}
+
+		shader.setVector3f(varName + ".color", lights[i].color);
+	}
 
 	shader.setInteger("hasTexture", hasTexture);
 	if (hasTexture) {
 		shader.setTexture2D("textureUniform", GL_TEXTURE0, texture.textureID, 0);
 	} else {
-		shader.setVector3f("colorUniform", color);
+		shader.setVector3f("material.ambient", material.ambient);
+		shader.setVector3f("material.diffuse", material.diffuse);
+		shader.setVector3f("material.specular", material.specular);
+		shader.setFloat("material.shininess", material.shininess);
 	}
 }
 
