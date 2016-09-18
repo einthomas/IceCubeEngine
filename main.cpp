@@ -12,6 +12,7 @@
 #include "Light.h"
 #include "LightType.h"
 #include "DirectionalLight.h"
+#include "PointLight.h"
 
 GLboolean firstMouse = true;
 GLdouble lastX, lastY;
@@ -36,8 +37,10 @@ int main() {
 
 	//ICE::Light light(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), ICE::LightType::DIRECTIONAL);
 	ICE::DirectionalLight light(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+	ICE::PointLight pointLight1(glm::vec3(-1.0f, 0.0f, 3.0f), glm::vec3(1.0f), 0.09f, 0.032f);
 	std::vector<ICE::Light> lights;
 	lights.push_back(light);
+	lights.push_back(pointLight1);
 
 	glm::vec3 a = glm::vec3(1.0f, 0.0f, 0.0f) * ICE::ResourceManager::materials["emerald"].ambient;
 
@@ -75,7 +78,6 @@ int main() {
 			window.keys[GLFW_KEY_F1] = false;
 			window.toggleFPSDisplay();
 		}
-
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

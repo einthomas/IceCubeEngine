@@ -34,14 +34,23 @@ void ICE::Shape::draw(std::vector<Light> lights) {
 	shader.setVector3f("eyePos", camera->position);
 
 	std::string varName;
+	GLuint pointLightID = 0;
 	for (int i = 0; i < lights.size(); i++) {
 		if (lights[i].lightType == LightType::DIRECTIONAL) {
 			varName = "dirLight";
 			shader.setVector3f(varName + ".dir", lights[i].direction);
+		} else if (lights[i].lightType == LightType::POINT) {
+			varName = "pointLights[" + std::to_string(pointLightID++) + "]";
+			shader.setVector3f(varName + ".pos", lights[i].position);
+			shader.setFloat(varName + ".constant", lights[i].constant);
+			shader.setFloat(varName + ".linear", lights[i].linear);
+			shader.setFloat(varName + ".quadratic", lights[i].quadratic);
 		}
 
 		shader.setVector3f(varName + ".color", lights[i].color);
 	}
+	
+	shader.setInteger("numPointLights", pointLightID);
 
 	shader.setInteger("hasTexture", hasTexture);
 	if (hasTexture) {
