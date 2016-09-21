@@ -18,13 +18,13 @@ namespace ICE {
 		glm::mat4 projection;
 
 		Camera();
-		Camera(glm::vec3 position, glm::vec3 target, GLfloat mouseSpeed, GLfloat fov, GLfloat near, GLfloat far, GLuint screenWidth, GLuint screenHeight);
+		Camera(glm::vec3 position, glm::vec3 target, GLboolean freeFly, GLfloat mouseSpeed, GLfloat fov, GLfloat near, GLfloat far, GLuint screenWidth, GLuint screenHeight);
 		void handleKeyboardInput(Movement movement, GLfloat movementSpeed, GLfloat deltaTime);
 		void handleMouseInput(GLfloat positionX, GLfloat positionY);
 		glm::mat4 getViewMatrix();
 
 	private:
-		glm::vec3 direction;
+		glm::vec3 movementDirection;
 		glm::vec3 right;
 		glm::vec3 up;
 		glm::vec3 front;
@@ -32,5 +32,8 @@ namespace ICE {
 		GLfloat pitch;
 		GLboolean firstMovement;
 		GLdouble lastX, lastY;
+
+		// if freeFly is true, the camera can move in every direction ("flying")
+		GLboolean freeFly;
 	};
 }

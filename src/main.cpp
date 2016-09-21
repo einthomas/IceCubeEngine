@@ -26,7 +26,7 @@ int main() {
 
 	ICE::Window window("test", width, height);
 	window.toggleFPSDisplay();
-	camera = ICE::Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f), 0.1f, 45.0f, 0.1f, 100.0f, width, height);
+	camera = ICE::Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f), true, 0.1f, 45.0f, 0.1f, 100.0f, width, height);
 	window.setCursorPosCallback(mouseCallback);
 
 	ICE::ResourceManager::loadResources("resources.txt");
@@ -45,7 +45,8 @@ int main() {
 
 	glm::vec3 a = glm::vec3(1.0f, 0.0f, 0.0f) * ICE::ResourceManager::materials["emerald"].ambient;
 
-	ICE::Shader shader(ICE::Util::readFileToString("shaders/vert.glsl"), ICE::Util::readFileToString("shaders/frag.glsl"));
+	//ICE::Shader shader(ICE::Util::readFileToString("shaders/vert.glsl"), ICE::Util::readFileToString("shaders/frag.glsl"));
+	ICE::Shader shader = ICE::ResourceManager::shaders["lighting"];
 	ICE::Triangle t(shader, &camera, ICE::ResourceManager::materials["emerald"], glm::vec3(0.0f));
 	ICE::Quad q(shader, &camera, ICE::ResourceManager::materials["emerald"], glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(1.0f, 0.0f, 0.0f), -55.0f);
 	ICE::Quad q2(shader, &camera, ICE::ResourceManager::textures["container"], glm::vec3(0.0f, 0.0f, 0.0f));
