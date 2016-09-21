@@ -10,7 +10,7 @@
 namespace ICE {
 	class Shader {
 	public:
-		GLuint program;
+		GLuint program = -1;
 
 		Shader();
 		Shader(std::string vertexSource, std::string fragmentSource);

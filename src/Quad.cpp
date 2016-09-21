@@ -22,6 +22,10 @@ void ICE::Quad::draw(std::vector<Light> lights) {
 	glBindVertexArray(0);
 }
 
+bool ICE::Quad::intersects(glm::vec3 position) {
+	return false;
+}
+
 void ICE::Quad::init() {
 	GLfloat vertices[] = {
 		 // Positions		 // Texture coords

@@ -21,6 +21,10 @@ void ICE::Triangle::draw(std::vector<Light> lights) {
 	glBindVertexArray(0);
 }
 
+bool ICE::Triangle::intersects(glm::vec3 position) {
+	return false;
+}
+
 void ICE::Triangle::init() {
 	GLfloat vertices[] = {
 		 // Positions		 // Colors

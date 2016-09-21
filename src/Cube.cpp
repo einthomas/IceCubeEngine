@@ -3,12 +3,19 @@
 GLuint ICE::Cube::VAO;
 GLuint ICE::Cube::VBO;
 
+ICE::Cube::Cube() {
+}
+
 ICE::Cube::Cube(Shader shader, Camera *camera, Material material, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
 	: Shape(shader, camera, material, position, scale, rotationAxis, angle) {
 }
 
 ICE::Cube::Cube(Shader shader, Camera *camera, Texture texture, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
 	: Shape(shader, camera, texture, position, scale, rotationAxis, angle) {
+}
+
+ICE::Cube::Cube(Camera *camera, glm::vec3 position, glm::vec3 scale, glm::vec3 rotationAxis, GLfloat angle)
+	: Shape(camera, position, scale, rotationAxis, angle) {
 }
 
 void ICE::Cube::draw(std::vector<Light> lights) {
@@ -19,6 +26,22 @@ void ICE::Cube::draw(std::vector<Light> lights) {
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	glBindVertexArray(0);
+}
+
+bool ICE::Cube::intersects(glm::vec3 position) {
+	glm::vec4 w = model * glm::vec4(this->position, 1.0f);
+	glm::vec3 worldPos(w.x, w.y, w.z);
+
+	glm::vec4 s = model * glm::vec4(this->scale, 1.0f);
+	glm::vec3 worldScale(s.x, s.y, s.z);
+
+	if (position.x > worldPos.x - worldScale.x && position.x < worldPos.x + worldScale.x &&
+			position.y > worldPos.y - worldScale.y && position.y < worldPos.y + worldScale.y &&
+			position.z > worldPos.z - worldScale.z && position.z < worldPos.z + worldScale.z) {
+		return true;
+	}
+
+	return false;
 }
 
 void ICE::Cube::init() {

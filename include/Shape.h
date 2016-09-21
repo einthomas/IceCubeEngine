@@ -17,9 +17,12 @@
 namespace ICE {
 	class Shape {
 	public:
+		Shape();
 		Shape(Shader shader, Camera *camera, Material material, glm::vec3 position, glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotationAxis = glm::vec3(0.0f, 0.0f, 1.0f), GLfloat angle = 0.0f);
 		Shape(Shader shader, Camera *camera, Texture texture, glm::vec3 position, glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotationAxis = glm::vec3(0.0f), GLfloat angle = 0.0f);
+		Shape(Camera *camera, glm::vec3 position, glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotationAxis = glm::vec3(0.0f), GLfloat angle = 0.0f);
 		virtual void draw(std::vector<Light> lights);
+		virtual bool intersects(glm::vec3 position);
 
 		void setPosition(glm::vec3 position);
 		void setScale(glm::vec3 scale);

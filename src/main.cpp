@@ -14,6 +14,9 @@
 #include "DirectionalLight.h"
 #include "PointLight.h"
 
+#include <glm\gtc\matrix_transform.hpp>
+#include <glm\gtc\type_ptr.hpp>
+
 GLboolean firstMouse = true;
 GLdouble lastX, lastY;
 ICE::Camera camera;
@@ -56,7 +59,12 @@ int main() {
 		GLfloat deltaTime = window.getDeltaTime();
 		window.pollEvents();
 
-		if (window.keys[GLFW_KEY_W]) {
+		glm::mat4 model = glm::mat4();
+		model = glm::translate(model, camera.position);
+		glm::vec4 p = model * glm::vec4(camera.position, 1.0f);
+		glm::vec3 p3 = glm::vec3(p.x, p.y, p.z);
+
+		if (window.keys[GLFW_KEY_W] && !c.intersects(p3) && !lightCube.intersects(p3)) {		// camera.position in worldSpace bringen und dann übergeben!!
 			camera.handleKeyboardInput(ICE::Movement::FORWARD, deltaTime);
 		}
 		if (window.keys[GLFW_KEY_S]) {
