@@ -13,6 +13,7 @@
 
 #include "Shader.h"
 #include "Util.h"
+#include "ResourceManager.h"
 
 namespace ICE {
 	struct Character {

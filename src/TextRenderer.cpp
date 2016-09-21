@@ -82,7 +82,8 @@ void ICE::TextRenderer::init(GLuint screenWidth, GLuint screenHeight) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	shader = Shader(ICE::Util::readFileToString("shaders/textVert.glsl"), ICE::Util::readFileToString("shaders/textFrag.glsl"));
+	//shader = Shader(ICE::Util::readFileToString("shaders/textVert.glsl"), ICE::Util::readFileToString("shaders/textFrag.glsl"));
+	shader = ICE::ResourceManager::shaders["text"];
 }
 
 void ICE::TextRenderer::renderText(std::string text, GLfloat x, GLfloat y, GLfloat size, glm::vec3 color) {

@@ -9,11 +9,20 @@
 #include <streambuf>
 #include <vector>
 #include <sstream>
+#include <algorithm>
+#include <functional>
+#include <cctype>
+#include <locale>
 
 namespace ICE {
 	class Util {
 	public:
 		static std::string readFileToString(std::string path);
 		static std::vector<std::string> splitString(std::string s, char delimiter);
+		static std::string &ltrim(std::string &s);
+		static std::string &rtrim(std::string &s);
+	
+	private:
+		static const std::string delimiters;
 	};
 }
