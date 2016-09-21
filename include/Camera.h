@@ -12,16 +12,15 @@
 namespace ICE {
 	class Camera {
 	public:
-		GLfloat movementSpeed;
 		GLfloat mouseSpeed;
 		glm::vec3 position;
 		glm::vec3 target;
 		glm::mat4 projection;
 
 		Camera();
-		Camera(glm::vec3 position, glm::vec3 target, GLfloat movementSpeed, GLfloat mouseSpeed, GLfloat fov, GLfloat near, GLfloat far, GLuint screenWidth, GLuint screenHeight);
-		void handleKeyboardInput(Movement movement, GLfloat deltaTime);
-		void handleMouseInput(GLfloat offsetX, GLfloat offsetY);
+		Camera(glm::vec3 position, glm::vec3 target, GLfloat mouseSpeed, GLfloat fov, GLfloat near, GLfloat far, GLuint screenWidth, GLuint screenHeight);
+		void handleKeyboardInput(Movement movement, GLfloat movementSpeed, GLfloat deltaTime);
+		void handleMouseInput(GLfloat positionX, GLfloat positionY);
 		glm::mat4 getViewMatrix();
 
 	private:
@@ -31,5 +30,7 @@ namespace ICE {
 		glm::vec3 front;
 		GLfloat yaw;
 		GLfloat pitch;
+		GLboolean firstMovement;
+		GLdouble lastX, lastY;
 	};
 }

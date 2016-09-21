@@ -17,8 +17,6 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
-GLboolean firstMouse = true;
-GLdouble lastX, lastY;
 ICE::Camera camera;
 static void mouseCallback(GLdouble posX, GLdouble posY);
 
@@ -28,7 +26,7 @@ int main() {
 
 	ICE::Window window("test", width, height);
 	window.toggleFPSDisplay();
-	camera = ICE::Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f), 4.0f, 0.1f, 45.0f, 0.1f, 100.0f, width, height);
+	camera = ICE::Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f), 0.1f, 45.0f, 0.1f, 100.0f, width, height);
 	window.setCursorPosCallback(mouseCallback);
 
 	ICE::ResourceManager::loadResources("resources.txt");
@@ -55,6 +53,7 @@ int main() {
 	ICE::Cube c(shader, &camera, ICE::ResourceManager::materials["emerald"], glm::vec3(0.0f));
 	ICE::Cube lightCube(shader, &camera, ICE::ResourceManager::textures["cube"], glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(0.5f));
 
+	GLfloat cameraMovementSpeed = 4.0f;
 	while (!window.shouldClose()) {
 		GLfloat deltaTime = window.getDeltaTime();
 		window.pollEvents();
@@ -65,22 +64,22 @@ int main() {
 		glm::vec3 p3 = glm::vec3(p.x, p.y, p.z);
 
 		if (window.keys[GLFW_KEY_W] && !c.intersects(p3) && !lightCube.intersects(p3)) {		// camera.position in worldSpace bringen und dann übergeben!!
-			camera.handleKeyboardInput(ICE::Movement::FORWARD, deltaTime);
+			camera.handleKeyboardInput(ICE::Movement::FORWARD, cameraMovementSpeed, deltaTime);
 		}
 		if (window.keys[GLFW_KEY_S]) {
-			camera.handleKeyboardInput(ICE::Movement::BACKWARD, deltaTime);
+			camera.handleKeyboardInput(ICE::Movement::BACKWARD, cameraMovementSpeed, deltaTime);
 		}
 		if (window.keys[GLFW_KEY_A]) {
-			camera.handleKeyboardInput(ICE::Movement::LEFT, deltaTime);
+			camera.handleKeyboardInput(ICE::Movement::LEFT, cameraMovementSpeed, deltaTime);
 		}
 		if (window.keys[GLFW_KEY_D]) {
-			camera.handleKeyboardInput(ICE::Movement::RIGHT, deltaTime);
+			camera.handleKeyboardInput(ICE::Movement::RIGHT, cameraMovementSpeed, deltaTime);
 		}
 		if (window.keys[GLFW_KEY_SPACE]) {
-			camera.handleKeyboardInput(ICE::Movement::UPWARD, deltaTime);
+			camera.handleKeyboardInput(ICE::Movement::UPWARD, cameraMovementSpeed, deltaTime);
 		}
 		if (window.keys[GLFW_KEY_LEFT_SHIFT]) {
-			camera.handleKeyboardInput(ICE::Movement::DOWNWARD, deltaTime);
+			camera.handleKeyboardInput(ICE::Movement::DOWNWARD, cameraMovementSpeed, deltaTime);
 		}
 		if (window.keys[GLFW_KEY_F1]) {
 			window.keys[GLFW_KEY_F1] = false;
@@ -107,15 +106,5 @@ int main() {
 }
 
 void mouseCallback(GLdouble positionX, GLdouble positionY) {
-	if (firstMouse) {
-		lastX = positionX;
-		lastY = positionY;
-		firstMouse = false;
-	}
-
-	GLfloat offsetX = positionX - lastX;
-	GLfloat offsetY = lastY - positionY;
-	lastX = positionX;
-	lastY = positionY;
-	camera.handleMouseInput(offsetX, offsetY);
+	camera.handleMouseInput(positionX, positionY);
 }

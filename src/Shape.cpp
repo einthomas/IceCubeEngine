@@ -81,6 +81,10 @@ void ICE::Shape::draw(std::vector<Light> lights) {
 	}
 }
 
+bool ICE::Shape::intersects(glm::vec3 position) {
+	return false;
+}
+
 void ICE::Shape::updateTransformMatrix() {
 	model = glm::mat4();
 	model = glm::translate(model, position);

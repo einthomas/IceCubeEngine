@@ -3,11 +3,12 @@
 ICE::Camera::Camera() {
 }
 
-ICE::Camera::Camera(glm::vec3 position, glm::vec3 target, GLfloat movementSpeed, GLfloat mouseSpeed, GLfloat fov, GLfloat near, GLfloat far, GLuint screenWidth, GLuint screenHeight) {
+ICE::Camera::Camera(glm::vec3 position, glm::vec3 target, GLfloat mouseSpeed, GLfloat fov, GLfloat near, GLfloat far, GLuint screenWidth, GLuint screenHeight) {
 	this->position = position;
 	this->target = target;
-	this->movementSpeed = movementSpeed;
 	this->mouseSpeed = mouseSpeed;
+
+	firstMovement = true;
 
 	glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
 	direction = glm::normalize(position - target);
@@ -25,7 +26,7 @@ glm::mat4 ICE::Camera::getViewMatrix() {
 	return glm::lookAt(position, position + front, up);
 }
 
-void ICE::Camera::handleKeyboardInput(Movement movement, GLfloat deltaTime) {
+void ICE::Camera::handleKeyboardInput(Movement movement, GLfloat movementSpeed, GLfloat deltaTime) {
 	GLfloat actualMovementSpeed = movementSpeed * deltaTime;
 	if (movement == Movement::FORWARD)
 		position += actualMovementSpeed * front;
@@ -41,7 +42,18 @@ void ICE::Camera::handleKeyboardInput(Movement movement, GLfloat deltaTime) {
 		position -= actualMovementSpeed * up;
 }
 
-void ICE::Camera::handleMouseInput(GLfloat offsetX, GLfloat offsetY) {
+void ICE::Camera::handleMouseInput(GLfloat positionX, GLfloat positionY) {
+	if (firstMovement) {
+		lastX = positionX;
+		lastY = positionY;
+		firstMovement = false;
+	}
+
+	GLfloat offsetX = positionX - lastX;
+	GLfloat offsetY = lastY - positionY;
+	lastX = positionX;
+	lastY = positionY;
+
 	offsetX *= mouseSpeed;
 	offsetY *= mouseSpeed;
 
